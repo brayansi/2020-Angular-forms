@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-templat-driven',
@@ -8,6 +9,8 @@ import { NgForm } from '@angular/forms';
 })
 export class TemplatDrivenComponent implements OnInit {
 
+  @ViewChild('myForm', {static: true}) myForm: NgForm
+
   user = {
     name: '',
     age: '',
@@ -15,13 +18,28 @@ export class TemplatDrivenComponent implements OnInit {
     confirmEmail: ''
   }
 
-  constructor() { }
+  constructor(
+        private http : HttpClient
+  ) { }
 
   ngOnInit() {
   }
 
   onSubmit(myForm: NgForm) {
     console.log(myForm);
+  }
+
+  getAddress(cep) {
+    this.http.get(`http://viacep.com.br/ws/${cep}/json`).toPromise().then((address: any)=> {
+      this.myForm.form.patchValue({address: {
+        street: address.cidade,
+        neighborhood: address.logradouro,
+        city: address.localidade,
+        state: address.uf
+      }})
+    }).catch((err)=> [
+
+    ])
   }
 
 }

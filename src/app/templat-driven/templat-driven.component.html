@@ -2,7 +2,11 @@
     <div ngModelGroup="user">
         <label>
             <p>Name:</p>
-            <input  type="text" name="name" [(ngModel)]="user.name" >
+            <input #name="ngModel"  type="text" name="name" required minlength="3" maxlength="5" [(ngModel)]="user.name" >
+            <ul *ngIf="name.dirty && name.invalid">
+                <li *ngIf="name.errors?.required">Campo obrigatório</li>
+                <li *ngIf="name.errors?.minlength">O campo deve ter pelo menos 3 caracteres</li>
+            </ul>
         </label>
         <label>
             <p>Age:</p>
@@ -10,7 +14,7 @@
         </label>
         <label>
             <p>Email:</p>
-            <input  type="text" name="email" ngModel >
+            <input  type="email" name="email" email ngModel >
         </label>
         <label>
             <p>Confirm Email:</p>
@@ -18,7 +22,23 @@
         </label>
     </div>
 
-    <div ngModelGroup="address">,
+    <div ngModelGroup="address">
+        <label>
+            <p>CEP:</p>
+            <input  type="text" name="cep" #cep (blur)="getAddress(cep.value)" ngModel >
+        </label>
+        <label>
+            <p>State:</p>
+            <input  type="text" name="state" ngModel >
+        </label>
+        <label>
+            <p>City:</p>
+            <input  type="text" name="city" ngModel >
+        </label>
+        <label>
+            <p>Neighborhood:</p>
+            <input  type="text" name="neighborhood"ngModel >
+        </label>
         <label>
             <p>Street:</p>
             <input  type="text" name="street" ngModel >
@@ -26,22 +46,6 @@
         <label>
             <p>Number:</p>
             <input  type="text" name="number" ngModel >
-        </label>
-        <label>
-            <p>Neighborhood:</p>
-            <input  type="text" name="neighborhood"ngModel >
-        </label>
-        <label>
-            <p>CEP:</p>
-            <input  type="text" name="cep" ngModel >
-        </label>
-        <label>
-            <p>City:</p>
-            <input  type="text" name="city" ngModel >
-        </label>
-        <label>
-            <p>State:</p>
-            <input  type="text" name="state" ngModel >
         </label>
     </div>
 
