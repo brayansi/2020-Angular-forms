@@ -1,10 +1,84 @@
-<form [formGroup]="form" >
-    <label>
-        <p>Name:</p>
-        <input type="text" formControlName="name">
-    </label>
-    <label>
-        <p>Email:</p>
-        <input type="text" formControlName="email">
-    </label>
+<button (click)="addFruit()">Add</button>
+
+<form [formGroup]="formList">
+    <div formArrayName="fruits" *ngFor="let item of formList.get('fruits').controls; let i = index;">
+        <div [formGroupName]="i">
+            <label>
+                <p>Name:</p>
+                <input type="text" formControlName="name">
+                {{ formList.get('fruits.' + i + '.name').errors | json }}
+            </label>
+            <label>
+                <p>Preço:</p>
+                <input type="number" formControlName="price">
+            </label>
+
+            <button (click)="removeFruit(i)">Remove</button>
+
+        </div>
+    </div>
+</form>
+
+<form [formGroup]="form" (submit)="onSubmit()">
+    <div formGroupName="user">
+        <label>
+            <p>Name:</p>
+            <input type="text" formControlName="name">
+        </label>
+        <label>
+            <p>Age:</p>
+            <input  type="text" formControlName="age">
+        </label>
+        <label>
+            <p>Email:</p>
+            <input  type="email" formControlName="email">
+        </label>
+        <label>
+            <p>Confirm Email:</p>
+            <input  type="text" formControlName="confirmEmail">
+        </label>
+        <div>
+            <p>Sexo:</p>
+            <label>
+                <input  type="radio" formControlName="sexo" value="male"> Masculino
+                <input  type="radio" formControlName="sexo" value="feminine"> Feminino
+            </label>
+        </div>
+        <label>
+            <p>Esta empregado?</p>
+            <input  type="checkbox" formControlName="isWorks">
+        </label>
+    </div>
+
+    <div formGroupName="address">
+        <label>
+            <p>CEP:</p>
+            <input  type="text" formControlName="cep" (blur)="getAddress()">
+        </label>
+        <label>
+            <p>State:</p>
+            <!-- <input  type="text" formControlName="state" > -->
+            <select formControlName="state">
+                <option *ngFor="let state of states" [value]="state.sigle" >{{ state.name }}</option>
+            </select>
+        </label>
+        <label>
+            <p>City:</p>
+            <input  type="text" formControlName="city" >
+        </label>
+        <label>
+            <p>Neighborhood:</p>
+            <input  type="text" formControlName="neighborhood" >
+        </label>
+        <label>
+            <p>Street:</p>
+            <input  type="text" formControlName="street" >
+        </label>
+        <label>
+            <p>Number:</p>
+            <input  type="text" formControlName="number" >
+        </label>
+    </div>
+
+    <button type="submit">Enviar</button>
 </form>
